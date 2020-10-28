@@ -1,4 +1,4 @@
-require('dotenv').config();
+
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
@@ -8,7 +8,7 @@ const sassMiddleware = require('node-sass-middleware');
 
 
 const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+const loginRouter = require('./routes/login');
 
 const app = express();
 
@@ -19,20 +19,22 @@ const app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
-// app.use(logger('dev'));
+app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(sassMiddleware({
     src: path.join(__dirname, 'public'),
     dest: path.join(__dirname, 'public'),
+    debug: true,
+    outputStyle: 'compressed',
     indentedSyntax: false, // true = .sass and false = .scss
     sourceMap: false
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/login', loginRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
