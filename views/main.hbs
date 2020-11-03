@@ -1,0 +1,36 @@
+<div class="transparent-opacity input">
+        <div class="bg"></div>
+        <Form id="createTodo" onsubmit="return false" class="input">
+            <div class="input-field col s6 input">
+                <input id="Email" type="text" name="text" required class="input">
+                <label for="Email">Todo</label>
+            </div>
+            <div>
+                <button class="btn log" type="submit">Create</button>
+            </div>
+        </Form>
+        <table>
+            <thead>
+            <tr>
+                <th></th>
+                <th>Task</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {{#each todos}}
+                <tr>
+                    <td>
+                        <p>
+                            <label>
+                                <input type="checkbox" checked="{{this.isOwner}}"/>
+                                <span>Yellow</span>
+                            </label>
+                        </p>
+                    </td>
+                    <td>{{this.text}}</td>
+                </tr>
+            {{/each}}
+            </tbody>
+        </table>
+</div>

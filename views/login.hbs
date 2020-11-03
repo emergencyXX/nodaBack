@@ -1,5 +1,22 @@
-<div class="container g--6">
-    <div class="g--5 g-s--12 tile">
-        We're in a container
-    </div>
+<div class="transparent-opacity input">
+    <div class="bg"></div>
+    <Form id="LoginForm" onsubmit="return false" class="input">
+        <div class="input-field col s6 input">
+            <input  id="Email" type="email" class="input">
+            <label for="Email">Email</label>
+        </div>
+        <div class="input-field col s6 input">
+            <input id="Password" type="password" class="input">
+            <label for="Password">Password</label>
+        </div>
+        <a href="#" class="link log">forgot password</a>
+        <div>
+            <button class="btn log" type="submit">Login</button>
+            <button id="register" type="button"  class="btn log">Register</button>
+        </div>
+        <div id="BadLogin">
+            <p>The login information you entered does not match
+                an account in our records. Please try again.</p>
+        </div>
+    </Form>
 </div>

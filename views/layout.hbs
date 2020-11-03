@@ -11,19 +11,36 @@
     <link rel='stylesheet' href='/stylesheets/style.css'/>
 </head>
 <body>
-<nav class="lime lighten-3">
+<nav class="transparent">
     <div class="container">
         <div class="nav-wrapper">
-            <a href="#!" class="brand-logo light-blue-text text-lighten-3"><i class="material-icons light-blue-text text-lighten-3 ">cloud_queue</i>NodeJs</a>
+            <a href="#" class="brand-logo" style="color:#01cc83"><i class="material-icons ">cloud_queue</i>NodeJs</a>
             <ul class="right hide-on-med-and-down">
-                <li><a class="light-blue lighten-3 btn"><i class="material-icons">directions_walk</i></a></li>
+                <li>
+                    {{#if  isLoginPage }}
+
+                    {{else}}
+
+                        {{#if  login }}
+                            <button id="logoutButton" class="btn"
+                               style="background-color:#01cc83;color:#262d3d;font-weight: bold">Logout</button>
+                        {{else}}
+                        <a href="/auth" id="authButton" class="btn"
+                           style="background-color:#01cc83;color:#262d3d;font-weight: bold">Login</a>
+
+                        {{/if}}
+                    {{/if}}
+                </li>
             </ul>
         </div>
     </div>
 </nav>
+<img src="/images/main.png" class="img_bg"/>
 {{{body}}}
 
 </body>
 <!-- Compiled and minified JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="/javascripts/main.js"></script>
+<script src="/javascripts/login-ajax.js"></script>
 </html>
