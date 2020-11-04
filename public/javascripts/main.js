@@ -13,9 +13,27 @@ var todoAct = async (form, type) => {
         await xmlhttpCrTodo.send(JSON.stringify({text}));
         xmlhttpCrTodo.onload = function () {
             if (xmlhttpCrTodo.readyState === xmlhttpCrTodo.DONE) {
-                if (xmlhttpCrTodo.status === 200) {
+                form.text.value = ''
+                if (xmlhttpCrTodo.status === 201) {
                     let response = JSON.parse(xmlhttpCrTodo.response)
-                    debugger;
+                    const table = document.getElementById("table");
+                    const tr = document.createElement('tr');
+                    table.append(tr);
+                    tr.innerHTML =
+                        `
+                          <tr>
+                            <td>${response.data.text}</td>
+                            <td>
+                                <p>
+                                    <label>
+                                        <input type="checkbox" id="${response.data._id}" ${response.data.isDone ? 'checked' :''}/>
+                                        <span></span>
+                                    </label>
+                                </p>
+                            </td>
+                            <td class="delete" onclick="deleteTask('${response.data._id}')">delete</td>
+                        </tr>
+                    `;
                 } else if (xmlhttpCrTodo.status === 400) {
 
                 }
@@ -36,3 +54,36 @@ window.addEventListener("load", async () => {
         });
     }
 });
+const turn = async (id) => {
+    const xmlhttpCrTodo = new XMLHttpRequest();
+    xmlhttpCrTodo.open("post", "/main/do", true);
+    xmlhttpCrTodo.setRequestHeader('Content-Type', 'application/json')
+    await xmlhttpCrTodo.send(JSON.stringify({id}));
+    xmlhttpCrTodo.onload = function () {
+        if (xmlhttpCrTodo.readyState === xmlhttpCrTodo.DONE) {
+            if (xmlhttpCrTodo.status === 201) {
+                let response = JSON.parse(xmlhttpCrTodo.response)
+
+            } else if (xmlhttpCrTodo.status === 400) {
+
+            }
+        }
+    }
+}
+
+const deleteTask = async (id) => {
+    const xmlhttpCrTodo = new XMLHttpRequest();
+    xmlhttpCrTodo.open("delete", "/main", true);
+    xmlhttpCrTodo.setRequestHeader('Content-Type', 'application/json')
+    await xmlhttpCrTodo.send(JSON.stringify({id}));
+    xmlhttpCrTodo.onload = function () {
+        if (xmlhttpCrTodo.readyState === xmlhttpCrTodo.DONE) {
+            if (xmlhttpCrTodo.status === 201) {
+                let response = JSON.parse(xmlhttpCrTodo.response)
+                document.getElementById(response.data.id).closest('tr').remove();
+            } else if (xmlhttpCrTodo.status === 400) {
+
+            }
+        }
+    }
+}

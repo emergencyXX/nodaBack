@@ -1,36 +1,42 @@
-<div class="transparent-opacity input">
-        <div class="bg"></div>
-        <Form id="createTodo" onsubmit="return false" class="input">
-            <div class="input-field col s6 input">
-                <input id="Email" type="text" name="text" required class="input">
-                <label for="Email">Todo</label>
-            </div>
-            <div>
-                <button class="btn log" type="submit">Create</button>
-            </div>
-        </Form>
-        <table>
-            <thead>
-            <tr>
-                <th></th>
-                <th>Task</th>
-            </tr>
-            </thead>
+<div class="transparent-opacity input main">
+    <div class="bg"></div>
+    <Form id="createTodo" onsubmit="return false" class="input">
+        <div class="input-field col s6 input">
+            <input id="Email" type="text" name="text" required class="input">
+            <label for="Email">Todo</label>
+        </div>
+        <div>
+            <button class="btn log" type="submit">Create</button>
+        </div>
+    </Form>
+    <table>
+        <thead>
+        <tr>
+            <th>Task</th>
+            <th>Is Done</th>
+            <th>Delete</th>
+        </tr>
+        </thead>
 
-            <tbody>
-            {{#each todos}}
-                <tr>
-                    <td>
-                        <p>
-                            <label>
-                                <input type="checkbox" checked="{{this.isOwner}}"/>
-                                <span>Yellow</span>
-                            </label>
-                        </p>
-                    </td>
-                    <td>{{this.text}}</td>
-                </tr>
-            {{/each}}
-            </tbody>
-        </table>
+        <tbody id="table">
+        {{#each todos}}
+            <tr>
+                <td>{{this.text}}</td>
+                <td>
+                    <p>
+                        <label>
+                            {{#if this.isDone}}
+                                <input type="checkbox" id="{{this._id}}" onclick="turn('{{this._id}}')" checked/>
+                            {{else}}
+                                <input type="checkbox" id="{{this._id}}" onclick="turn('{{this._id}}')" />
+                            {{/if}}
+                            <span></span>
+                        </label>
+                    </p>
+                </td>
+                <td class="delete" onclick="deleteTask('{{this._id}}')">delete</td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
 </div>

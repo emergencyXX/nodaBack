@@ -12,7 +12,6 @@ router.get('/', async (req, res) => {
     try {
         if (req.user) {
             try {
-
                 let todos = await Todo.find({owner: req.user.userId});
                 return res.render('main', {title: 'main', login: true, todos})
 
@@ -41,10 +40,27 @@ router.post(
             if (!errors.isEmpty()) {
                 return res.status(400).json({errors: errors.array(), message: 'Incorrect data...'})
             }
-            const newTodo = await Todo({text})
+            const newTodo = await Todo({ text, owner:req.user.userId })
             await newTodo.save()
 
-            res.status(201).json({message: "Todo created..."})
+            res.status(201).json({data: newTodo})
+        } catch (e) {
+            res.status(500).json({message: 'Something went wrong....'})
+        }
+    })
+
+router.post(
+    '/do',
+    async (req, res) => {
+        const {id} = req.body
+        try {
+            const newTodo = await Todo.findById(id);
+
+            newTodo.isDone = !newTodo.isDone;
+
+            await newTodo.save();
+
+            res.status(201).json({data: newTodo})
         } catch (e) {
             res.status(500).json({message: 'Something went wrong....'})
         }
@@ -68,16 +84,11 @@ router.put('/', [check('text', 'Min length 3 char...').isLength({min: 3})],
     })
 
 router.delete('/', async (req, res) => {
-    const {text} = req.body
+    const {id} = req.body
     try {
-        const errors = validationResult(req)
-        if (!errors.isEmpty()) {
-            return res.status(400).json({errors: errors.array(), message: 'Incorrect data...'})
-        }
-        const newTodo = await Todo({text})
-        await newTodo.save()
+        const newTodo = await Todo.deleteOne({_id : id});
 
-        res.status(201).json({message: "Todo created..."})
+        res.status(201).json({data: {id}})
     } catch (e) {
         res.status(500).json({message: 'Something went wrong....'})
     }
