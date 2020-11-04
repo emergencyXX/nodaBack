@@ -68,16 +68,15 @@ router.post(
 
 router.put('/', [check('text', 'Min length 3 char...').isLength({min: 3})],
     async (req, res) => {
-        const {text} = req.body
+        const {id, text} = req.body
         try {
-            const errors = validationResult(req)
-            if (!errors.isEmpty()) {
-                return res.status(400).json({errors: errors.array(), message: 'Incorrect data...'})
-            }
-            const newTodo = await Todo({text})
-            await newTodo.save()
+            const newTodo = await Todo.findById(id);
 
-            res.status(201).json({message: "Todo created..."})
+            newTodo.text = text;
+
+            await newTodo.save();
+
+            res.status(201).json({data: newTodo})
         } catch (e) {
             res.status(500).json({message: 'Something went wrong....'})
         }

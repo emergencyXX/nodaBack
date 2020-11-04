@@ -21,7 +21,7 @@
         <tbody id="table">
         {{#each todos}}
             <tr>
-                <td>{{this.text}}</td>
+                <td id="editText"><p onclick="editMode(true,'{{this._id}}')">{{this.text}}</p></td>
                 <td>
                     <p>
                         <label>

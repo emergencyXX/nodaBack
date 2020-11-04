@@ -26,7 +26,7 @@ var todoAct = async (form, type) => {
                             <td>
                                 <p>
                                     <label>
-                                        <input type="checkbox" id="${response.data._id}" ${response.data.isDone ? 'checked' :''}/>
+                                        <input type="checkbox" onclick="turn('${response.data._id}')" id="${response.data._id}" ${response.data.isDone ? 'checked' :''}/>
                                         <span></span>
                                     </label>
                                 </p>
@@ -87,3 +87,33 @@ const deleteTask = async (id) => {
         }
     }
 }
+
+const saveData = async(id) =>{
+    const xmlhttpCrTodo = new XMLHttpRequest();
+    const editText = document.getElementById("editText");
+    xmlhttpCrTodo.open("put", "/main", true);
+    xmlhttpCrTodo.setRequestHeader('Content-Type', 'application/json')
+    await xmlhttpCrTodo.send(JSON.stringify({text:editText.firstElementChild.value, id}));
+    xmlhttpCrTodo.onload = function () {
+        if (xmlhttpCrTodo.readyState === xmlhttpCrTodo.DONE) {
+            if (xmlhttpCrTodo.status === 201) {
+                let response = JSON.parse(xmlhttpCrTodo.response)
+                editText.innerHTML = `<p onclick="editMode(true,'${response.data._id}')">${response.data.text}</p>`;
+            } else if (xmlhttpCrTodo.status === 400) {
+
+            }
+        }
+    }
+}
+
+const editMode = (turn, id) =>{
+    if (turn){
+        const editText = document.getElementById("editText");
+        const editValue = editText.firstChild.innerText;
+        editText.innerHTML = `
+            <input onblur="saveData('${id}')" type="text" value="${editValue}" autofocus class="editInp" />
+        `;
+    }
+}
+
+
